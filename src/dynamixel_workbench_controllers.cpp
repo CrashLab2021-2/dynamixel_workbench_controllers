@@ -782,15 +782,17 @@ bool DynamixelController::doorCallback(kanu_msgs::door::Request &req, kanu_msgs:
   }
   
   
-  if(req.isOpen == true){
+  if(req.signal == true){
     int32_t dynamixel_position[2] ={512 + angle, 512 - angle};
     result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_POSITION, id_array, 2, dynamixel_position, 1, &log);
     if (result == false)  ROS_ERROR("%s", log);
+    res.isOpen = true;
   }
   else{
     int32_t dynamixel_position[2] ={512, 512};
     result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_POSITION, id_array, 2, dynamixel_position, 1, &log);
     if (result == false)  ROS_ERROR("%s", log);
+    res.isOpen = false;
   }
   return true;
 }
